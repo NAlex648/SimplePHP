@@ -1,0 +1,59 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url(assets/backgroundphp.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+form {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    background-image: url(assets/loginbackground.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+input {
+    width: calc(100% - 16px);
+    padding: 8px;
+    margin-bottom: 16px;
+}
+input[type="submit"] {
+    width: 100%;
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+}
+input[type="submit"]:hover {
+    background-color: lightskyblue;
+}
+.message {
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    width: 100%;
+    display: none;
+}
+.message.invalid {
+    color: red;
+}
+.message.success {
+    color: green;
+}
