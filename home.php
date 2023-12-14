@@ -18,6 +18,7 @@ if (!isset($_SESSION['username'])) {
     header("Location: index.php");
     exit();
 }
+$username = $_SESSION['username'];
 // CSRF token validation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['csrf_token']) && validateCSRFToken($_POST['csrf_token'])) {
     // Your logic for processing forms or other actions
@@ -35,7 +36,7 @@ $_SESSION['csrf_token'] = generateCSRFToken();
     <title>Home</title>
 </head>
 <body>
-    <h1>Hello user! Welcome to the Home Page</h1>
+    <h1><?php echo "Welcome $username"?></h1>
     <?php
     // For logging out
     echo '<a href="logout.php">Logout</a>';
