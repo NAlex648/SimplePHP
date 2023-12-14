@@ -1,9 +1,7 @@
 <?php
 session_start();
 include_once 'config.php';
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +11,6 @@ include_once 'config.php';
 </head>
 <body>
     <h1>Please Login or Register</h1>
-    
     <?php
     if (isset($_SESSION['user_id'])) {
         header("Location: home.php");
