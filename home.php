@@ -36,7 +36,7 @@ $_SESSION['csrf_token'] = generateCSRFToken();
     <title>Home</title>
 </head>
 <body>
-    <h1><?php echo "Welcome $username"?></h1>
+    <h1><?php echo "Hello $username! Welcome to the home page"?></h1>
     <?php
     // For logging out
     echo '<a href="logout.php">Logout</a>';
