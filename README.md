@@ -1,0 +1,1 @@
+Start from index.php
