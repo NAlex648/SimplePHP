@@ -24,11 +24,14 @@ use simple_php_database;
 --
 CREATE TABLE `users` (
   `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `login_attempts` int(11) NOT NULL DEFAULT '0',
+  `last_login_attempt` datetime DEFAULT NULL,
+  PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO `users` (`username`, `password`) VALUES
-('username', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'),
-('user123', 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f');
+INSERT INTO `users` (`username`, `password`, `ip_address`, `login_attempts`, `last_login_attempt`) VALUES
+('user123', 'ed91e7d524bd28ef96c51d81167457c09652604b7288b51299de629b0623a4be', NULL, 0, NULL);
 COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
