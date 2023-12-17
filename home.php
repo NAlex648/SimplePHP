@@ -2,14 +2,17 @@
 session_start();
 include_once 'config.php';
 // XSS Prevention
-function sanitizeInput($input) {
+function sanitizeInput($input)
+{
     return htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
 }
 // CSRF Prevention
-function generateCSRFToken() {
+function generateCSRFToken()
+{
     return bin2hex(random_bytes(32));
 }
-function validateCSRFToken($token) {
+function validateCSRFToken($token)
+{
     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
 }
 // Can't go to home.php if not logged in
@@ -27,9 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['csrf_token']) && vali
         $allowedExtensions = ['png', 'jpeg', 'jpg'];
         $fileExtension = strtolower(pathinfo($_FILES['artwork']['name'], PATHINFO_EXTENSION));
         if (in_array($fileExtension, $allowedExtensions)) {
-            // Move the uploaded file to a secure location
+            // Upload
             $uploadDirectory = 'uploads/';
-            $newFileName = $username . '_' . time() . '.' . $fileExtension;
+            $newFileName = $username . '_' . date('Y_m_d_H_i_s') . '.' . $fileExtension;
             $uploadPath = $uploadDirectory . $newFileName;
             if (move_uploaded_file($_FILES['artwork']['tmp_name'], $uploadPath)) {
                 echo 'Artwork successfully uploaded!';
@@ -61,9 +64,32 @@ $_SESSION['csrf_token'] = generateCSRFToken();
         <input type="file" name="artwork" accept=".png, .jpeg, .jpg" required>
         <input type="submit" value="Submit Artwork">
     </form>
+    <button onclick="toggleFileListing()">Show Uploaded Files</button>
+    <div id="fileListing" style="display: none;">
+        <h2>Uploaded Files</h2>
+        <?php
+        $uploadedFiles = glob("uploads/$username*.{png,jpeg,jpg}", GLOB_BRACE);
+        if ($uploadedFiles) {
+            echo '<ul>';
+            foreach ($uploadedFiles as $file) {
+                echo "<li>$file</li>";
+                echo '<img src="' . $file . '" alt="Uploaded Artwork" style="max-width: 300px; max-height: 300px;">';
+            }
+            echo '</ul>';
+        } else {
+            echo '<p>No files uploaded yet.</p>';
+        }
+        ?>
+    </div>
     <?php
     // For logging out
     echo '<a href="logout.php">Logout</a>';
     ?>
+    <script>
+        function toggleFileListing() {
+            var fileListing = document.getElementById('fileListing');
+            fileListing.style.display = fileListing.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
 </body>
 </html>
