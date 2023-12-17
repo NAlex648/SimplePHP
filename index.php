@@ -9,7 +9,7 @@ include_once 'config.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 </head>
-<body>
+<body style="background-image: url(assets/background.jpg);">
     <h1>Please Login or Register</h1>
     <?php
     if (isset($_SESSION['user_id'])) {
