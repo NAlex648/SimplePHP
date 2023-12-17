@@ -13,4 +13,5 @@ I also add parallel login prevention system in my home.php and login.php, so if 
 
 # Add-on Feature
 As of 16/12/2023, I've added artwork image upload function on home.php, planning on adding more features when I have time
+
 17/12/2023: Added uploaded files listing/viewing
