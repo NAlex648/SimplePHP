@@ -17,29 +17,42 @@ if (!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = generateCSRFToken();
 }
 $csrfInput = '<input type="hidden" name="csrf_token" value="' . $_SESSION['csrf_token'] . '">';
+// Function: checking for registered username
+function isUsernameExists($conn, $username) {
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    return $result->num_rows > 0;
+}
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = sanitizeInput($_POST['username']);
     $password = sanitizeInput($_POST['password']);
     // CSRF token validation
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['csrf_token']) && validateCSRFToken($_POST['csrf_token'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['csrf_token']) && validateCSRFToken($_POST['csrf_token'])) {    
+        // Check if username already exists
+        if (isUsernameExists($conn, $username)) {
+            echo "Error: Username already exists.";
+            exit();
+        }
         // Password hashing
         $hashed_password = hash('sha256', $password);
-        // Inserts user information into the database
-        $sql = "INSERT INTO users (username, password) VALUES ('$username', '$hashed_password')";
-        if ($conn->query($sql) === TRUE) {
+        // Use prepared statement to avoid SQL injection
+        $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $username, $hashed_password);
+        if ($stmt->execute()) {
             // Registration successful
-            $_SESSION['user_id'] = $conn->insert_id;
+            $_SESSION['user_id'] = $stmt->insert_id;
             $_SESSION['username'] = $username;
-            session_unset();
-            session_destroy();
-            session_start();
-            session_regenerate_id(true);
             // Redirect to login
             header("Location: index.php");
             exit();
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "Error: " . $stmt->error;
         }
+        $stmt->close();
     } else {
         $error_message = "CSRF Token validation failed.";
     }
