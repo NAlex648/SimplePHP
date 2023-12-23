@@ -11,6 +11,8 @@ They all have session cookie reset for session cookie hijacking prevention
 
 I also add parallel login prevention system in my home.php and login.php, so if you try to go to home.php but not logging in, it will take you back. And if you try to login with an active session after logging in, it will move you back to home.php
 
+23/12/2023: Added forgotten SQLi prevention for register, also adding function to prevent registering username already added to the database, to prevent twin accounts
+
 # Add-on Feature
 As of 16/12/2023, I've added artwork image upload function on home.php, planning on adding more features when I have time
 
